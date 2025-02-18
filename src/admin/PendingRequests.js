@@ -1,64 +1,63 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const AcceptedRequests = () => {
-  const [acceptedRequests, setAcceptedRequests] = useState([]);
+const PendingRequests = () => {
+  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch accepted requests
+  // Fetch pending requests
   useEffect(() => {
-    const fetchAcceptedRequests = async () => {
+    const fetchPendingRequests = async () => {
       try {
         const response = await axios.get(
-          "https://saadprojectbk.vercel.app/admin/accepted-requests"
+          "https://saadprojectbk.vercel.app/admin/pending-requests"
         );
         if (response.data.success) {
-          setAcceptedRequests(response.data.requests);
+          setRequests(response.data.requests);
         } else {
-          setError("Failed to fetch accepted requests.");
+          setError("Failed to fetch requests.");
         }
       } catch (err) {
-        setError("Error fetching accepted requests.");
-        console.error("Error fetching accepted requests:", err);
+        setError("Error fetching requests.");
+        console.error("Error fetching requests:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAcceptedRequests();
+    fetchPendingRequests();
   }, []);
 
-  // Mark as delivered
-  const handleDelivered = async (id) => {
-    if (!window.confirm("Are you sure this request is delivered?")) return;
+  // Accept request
+  const handleAccept = async (id) => {
+    if (!window.confirm("Are you sure you want to accept this request?"))
+      return;
 
     try {
       const response = await axios.put(
-        `https://saadprojectbk.vercel.app/admin/deliver-request/${id}`
+        `https://saadprojectbk.vercel.app/admin/accept-request/${id}`
       );
       if (response.data.success) {
-        setAcceptedRequests(
-          acceptedRequests.filter((request) => request._id !== id)
-        );
+        setRequests(requests.filter((request) => request._id !== id));
       } else {
-        alert("Failed to mark as delivered.");
+        alert("Failed to accept request.");
       }
     } catch (error) {
-      alert("Error marking request as delivered.");
-      console.error("Error marking request as delivered:", error);
+      alert("Error accepting request.");
+      console.error("Error accepting request:", error);
     }
   };
 
   return (
     <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Accepted Requests</h2>
+      <h2 className="text-2xl font-bold mb-4">Pending Requests</h2>
 
       {loading ? (
         <p>Loading requests...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
-      ) : acceptedRequests.length > 0 ? (
+      ) : requests.length > 0 ? (
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-200">
@@ -72,7 +71,7 @@ const AcceptedRequests = () => {
             </tr>
           </thead>
           <tbody>
-            {acceptedRequests.map((request) => (
+            {requests.map((request) => (
               <tr key={request._id} className="text-center">
                 <td className="border p-2">{request.productName}</td>
                 <td className="border p-2">{request.email}</td>
@@ -82,10 +81,10 @@ const AcceptedRequests = () => {
                 <td className="border p-2">{request.address}</td>
                 <td className="border p-2">
                   <button
-                    onClick={() => handleDelivered(request._id)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700"
+                    onClick={() => handleAccept(request._id)}
+                    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700"
                   >
-                    Delivered
+                    Accept This Request
                   </button>
                 </td>
               </tr>
@@ -93,10 +92,10 @@ const AcceptedRequests = () => {
           </tbody>
         </table>
       ) : (
-        <p>No accepted requests found.</p>
+        <p>No pending requests found.</p>
       )}
     </div>
   );
 };
 
-export default AcceptedRequests;
+export default PendingRequests;
