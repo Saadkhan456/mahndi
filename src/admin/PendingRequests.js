@@ -36,7 +36,7 @@ const PendingRequests = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/admin/accept-request/${id}`
+        `https://saadprojectbk.vercel.app/admin/accept-request/${id}`
       );
       if (response.data.success) {
         setRequests(requests.filter((request) => request._id !== id));
