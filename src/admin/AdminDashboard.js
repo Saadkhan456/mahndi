@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import RegisteredUsers from "./RegisteredUsers";
@@ -8,18 +8,22 @@ import FinishedRequests from "./FinishedRequests";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Redirect unauthorized users to the home page
-    if (localStorage.getItem("isAdmin") !== "true") {
-      navigate("/");
-    }
-  }, [navigate]);
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
 
   const handleLogout = () => {
     localStorage.removeItem("isAdmin"); // Clear login state
     navigate("/"); // Redirect to home
   };
+
+  if (!isAdmin) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-2xl font-bold text-red-500">
+          Access Denied! Please log in as an admin.
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="flex">
@@ -46,4 +50,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-￼Enter
