@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoginPopup from "./LoginPopup";
+import AdminLogin from "./AdminLogin"; // Import the new AdminLogin component
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false); // State for Admin Login
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -16,6 +18,10 @@ const Navbar = () => {
   const handleLoginSuccess = (userData) => {
     setUser(userData);
     setShowLoginPopup(false);
+  };
+
+  const handleAdminLoginSuccess = () => {
+    setShowAdminLogin(false); // Close the Admin Login popup
   };
 
   const handleLogout = () => {
@@ -82,6 +88,13 @@ const Navbar = () => {
             }
           >
             My Orders
+          </button>
+          {/* Admin Login Button */}
+          <button
+            className="hover:underline block lg:inline px-2 py-1"
+            onClick={() => setShowAdminLogin(true)}
+          >
+            Admin Login
           </button>
         </div>
 
@@ -190,13 +203,32 @@ const Navbar = () => {
           >
             My Orders
           </button>
+          {/* Admin Login Button for Mobile */}
+          <button
+            className="block hover:underline text-lg"
+            onClick={() => {
+              setShowAdminLogin(true);
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Admin Login
+          </button>
         </div>
       </div>
 
+      {/* Login Popup */}
       {showLoginPopup && (
         <LoginPopup
           onClose={() => setShowLoginPopup(false)}
           onLoginSuccess={handleLoginSuccess}
+        />
+      )}
+
+      {/* Admin Login Popup */}
+      {showAdminLogin && (
+        <AdminLogin
+          onClose={() => setShowAdminLogin(false)}
+          onLoginSuccess={handleAdminLoginSuccess}
         />
       )}
     </>
