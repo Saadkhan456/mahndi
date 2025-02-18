@@ -6,11 +6,16 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
+
+    // Check if admin is logged in
+    const adminLoginStatus = localStorage.getItem("isAdminLoggedIn") === "true";
+    setIsAdminLoggedIn(adminLoginStatus);
   }, []);
 
   const handleLoginSuccess = (userData) => {
@@ -23,6 +28,12 @@ const Navbar = () => {
     localStorage.removeItem("cart");
     localStorage.removeItem("phone");
     setUser(null);
+    navigate("/");
+  };
+
+  const handleAdminLogout = () => {
+    localStorage.removeItem("isAdminLoggedIn");
+    setIsAdminLoggedIn(false);
     navigate("/");
   };
 
@@ -83,6 +94,23 @@ const Navbar = () => {
           >
             My Orders
           </button>
+
+          {/* Admin Login / Dashboard Link */}
+          {isAdminLoggedIn ? (
+            <button
+              className="hover:underline block lg:inline px-2 py-1 text-green-400"
+              onClick={() => navigate("/admin-dashboard")}
+            >
+              Go to Dashboard
+            </button>
+          ) : (
+            <Link
+              to="/admin-login"
+              className="hover:underline block lg:inline px-2 py-1 text-red-400"
+            >
+              Admin Login
+            </Link>
+          )}
         </div>
 
         {/* User Section */}
@@ -105,6 +133,16 @@ const Navbar = () => {
               className="bg-white text-black px-4 py-2 rounded text-sm"
             >
               Login
+            </button>
+          )}
+
+          {/* Admin Logout Button */}
+          {isAdminLoggedIn && (
+            <button
+              onClick={handleAdminLogout}
+              className="bg-red-500 text-white px-4 py-2 rounded text-sm"
+            >
+              Logout Admin
             </button>
           )}
         </div>
@@ -190,6 +228,27 @@ const Navbar = () => {
           >
             My Orders
           </button>
+
+          {/* Admin Login / Dashboard Link for Mobile */}
+          {isAdminLoggedIn ? (
+            <button
+              className="block hover:underline text-lg text-green-400"
+              onClick={() => {
+                navigate("/admin-dashboard");
+                setIsMobileMenuOpen(false);
+              }}
+            >
+              Go to Dashboard
+            </button>
+          ) : (
+            <Link
+              to="/admin-login"
+              className="block hover:underline text-lg text-red-400"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Admin Login
+            </Link>
+          )}
         </div>
       </div>
 
