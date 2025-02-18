@@ -35,7 +35,7 @@ const RegisteredUser = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/admin/delete-user/${id}`
+        `https://saadprojectbk.vercel.app/admin/delete-user/${id}`
       );
       if (response.data.success) {
         setUsers(users.filter((user) => user._id !== id));
