@@ -35,7 +35,7 @@ const AcceptedRequests = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/admin/deliver-request/${id}`
+        `https://saadprojectbk.vercel.app/admin/deliver-request/${id}`
       );
       if (response.data.success) {
         setAcceptedRequests(
