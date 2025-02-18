@@ -10,9 +10,10 @@ const AdminLogin = ({ onClose, onLoginSuccess }) => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Simple hardcoded authentication
+    // Store admin status in localStorage for access control
     if (username === "addoman" && password === "mehendiwali") {
-      onLoginSuccess(); // Notify parent component of successful login
+      localStorage.setItem("isAdmin", "true");
+      onLoginSuccess(); // Notify parent component
       navigate("/admin"); // Redirect to AdminDashboard
     } else {
       setError("Invalid username or password");
