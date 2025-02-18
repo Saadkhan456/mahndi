@@ -1,31 +1,52 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
+import { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import AdminLogin from "./admin/AdminLogin";
+import AdminDashboard from "./admin/AdminDashboard";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import Results from "./pages/Results";
-import LoginPopup from "./components/LoginPopup";
-import AdminDashboard from "./admin/AdminDashboard";
-import "./index.css";
+import Navbar from "./components/Navbar";
 
 function App() {
-  const [showLogin, setShowLogin] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   return (
     <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Navbar onLoginClick={() => setShowLogin(true)} />
+      <div>
+        {!isAdminLoggedIn && <Navbar />}
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/results" element={<Results />} />
-          <Route path="/admin/*" element={<AdminDashboard />} />
+
+          {/* Admin Login */}
+          <Route
+            path="/admin-login"
+            element={<AdminLogin onLogin={setIsAdminLoggedIn} />}
+          />
+
+          {/* Admin Dashboard - Protected Route */}
+          <Route
+            path="/admin-dashboard"
+            element={
+              isAdminLoggedIn ? (
+                <AdminDashboard />
+              ) : (
+                <Navigate to="/admin-login" />
+              )
+            }
+          />
         </Routes>
-        {showLogin && <LoginPopup onClose={() => setShowLogin(false)} />}
       </div>
     </Router>
   );
