@@ -15,9 +15,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
       {/* Sidebar Container */}
       <div
-        className={`fixed lg:relative top-0 left-0 h-full bg-gray-800 text-white w-64 transition-transform transform ${
-          isOpen ? "translate-x-0" : "-translate-x-64"
-        } lg:translate-x-0 z-50 p-5`}
+        className={`fixed lg:relative top-0 left-0 h-full bg-gray-900 text-white w-72 transition-transform transform ${
+          isOpen ? "translate-x-0" : "-translate-x-72"
+        } lg:translate-x-0 z-50 p-6 shadow-lg lg:shadow-none`}
       >
         {/* Close Button (Mobile Only) */}
         <button
@@ -28,14 +28,14 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         </button>
 
         {/* Sidebar Header */}
-        <h2 className="text-xl font-bold mb-6">Admin Panel</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Admin Panel</h2>
 
         {/* Navigation Links */}
         <ul className="space-y-3">
           <li>
             <Link
               to="/admin/registered-users"
-              className="block px-4 py-2 rounded hover:bg-gray-700 transition"
+              className="block px-4 py-2 rounded hover:bg-gray-700 transition text-lg"
             >
               Registered Users
             </Link>
@@ -43,7 +43,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <li>
             <Link
               to="/admin/pending-requests"
-              className="block px-4 py-2 rounded hover:bg-gray-700 transition"
+              className="block px-4 py-2 rounded hover:bg-gray-700 transition text-lg"
             >
               Pending Requests
             </Link>
@@ -51,7 +51,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <li>
             <Link
               to="/admin/accepted-requests"
-              className="block px-4 py-2 rounded hover:bg-gray-700 transition"
+              className="block px-4 py-2 rounded hover:bg-gray-700 transition text-lg"
             >
               Accepted Requests
             </Link>
@@ -59,7 +59,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <li>
             <Link
               to="/admin/finished-requests"
-              className="block px-4 py-2 rounded hover:bg-gray-700 transition"
+              className="block px-4 py-2 rounded hover:bg-gray-700 transition text-lg"
             >
               Finished Requests
             </Link>
