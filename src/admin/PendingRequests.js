@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Loader, CheckCircle } from "lucide-react"; // Icons for better UI
 
 const PendingRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -50,49 +51,65 @@ const PendingRequests = () => {
   };
 
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Pending Requests</h2>
+    <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4">
+        Pending Requests
+      </h2>
 
       {loading ? (
-        <p>Loading requests...</p>
+        <div className="flex justify-center items-center h-40">
+          <Loader className="animate-spin text-gray-500" size={32} />
+        </div>
       ) : error ? (
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500 text-center font-semibold">{error}</p>
       ) : requests.length > 0 ? (
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Product</th>
-              <th className="border p-2">Email</th>
-              <th className="border p-2">Phone</th>
-              <th className="border p-2">Quantity</th>
-              <th className="border p-2">Price</th>
-              <th className="border p-2">Address</th>
-              <th className="border p-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {requests.map((request) => (
-              <tr key={request._id} className="text-center">
-                <td className="border p-2">{request.productName}</td>
-                <td className="border p-2">{request.email}</td>
-                <td className="border p-2">{request.phone}</td>
-                <td className="border p-2">{request.quantity}</td>
-                <td className="border p-2">${request.price}</td>
-                <td className="border p-2">{request.address}</td>
-                <td className="border p-2">
-                  <button
-                    onClick={() => handleAccept(request._id)}
-                    className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700"
-                  >
-                    Accept This Request
-                  </button>
-                </td>
+        <div className="overflow-x-auto rounded-lg shadow-lg bg-white">
+          <table className="w-full text-sm md:text-base">
+            {/* Table Header */}
+            <thead className="bg-gray-800 text-white">
+              <tr className="text-left">
+                <th className="p-3 md:p-4">Product</th>
+                <th className="p-3 md:p-4">Email</th>
+                <th className="p-3 md:p-4">Phone</th>
+                <th className="p-3 md:p-4">Quantity</th>
+                <th className="p-3 md:p-4">Price</th>
+                <th className="p-3 md:p-4">Address</th>
+                <th className="p-3 md:p-4 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            {/* Table Body */}
+            <tbody>
+              {requests.map((request, index) => (
+                <tr
+                  key={request._id}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-gray-100"
+                  }`}
+                >
+                  <td className="p-3 md:p-4">{request.productName}</td>
+                  <td className="p-3 md:p-4">{request.email}</td>
+                  <td className="p-3 md:p-4">{request.phone}</td>
+                  <td className="p-3 md:p-4">{request.quantity}</td>
+                  <td className="p-3 md:p-4">${request.price}</td>
+                  <td className="p-3 md:p-4">{request.address}</td>
+                  <td className="p-3 md:p-4 text-center">
+                    <button
+                      onClick={() => handleAccept(request._id)}
+                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 md:px-4 md:py-2 rounded flex items-center justify-center transition"
+                    >
+                      <CheckCircle size={18} className="mr-1" /> Accept
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p>No pending requests found.</p>
+        <p className="text-gray-600 text-center font-medium">
+          No pending requests found.
+        </p>
       )}
     </div>
   );
