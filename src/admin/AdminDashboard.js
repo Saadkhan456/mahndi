@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import RegisteredUsers from "./RegisteredUsers";
 import PendingRequests from "./PendingRequests";
 import AcceptedRequests from "./AcceptedRequests";
 import FinishedRequests from "./FinishedRequests";
+import { Menu } from "lucide-react"; // For menu icon
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const isAdmin = localStorage.getItem("isAdmin") === "true";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem("isAdmin"); // Clear login state
-    navigate("/"); // Redirect to home
+    localStorage.removeItem("isAdmin");
+    navigate("/");
   };
 
   if (!isAdmin) {
@@ -26,24 +28,37 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1 p-5">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-          <button 
-            onClick={handleLogout} 
-            className="bg-red-500 text-white px-4 py-2 rounded"
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar - Toggleable */}
+      <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+
+      <div className="flex-1 flex flex-col">
+        {/* Navbar */}
+        <div className="flex items-center justify-between bg-white shadow-md p-4">
+          <button
+            className="lg:hidden text-gray-700"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+          >
+            <Menu size={24} />
+          </button>
+          <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition"
           >
             Logout
           </button>
         </div>
-        <Routes>
-          <Route path="registered-users" element={<RegisteredUsers />} />
-          <Route path="pending-requests" element={<PendingRequests />} />
-          <Route path="accepted-requests" element={<AcceptedRequests />} />
-          <Route path="finished-requests" element={<FinishedRequests />} />
-        </Routes>
+
+        {/* Main Content */}
+        <div className="flex-1 p-6">
+          <Routes>
+            <Route path="registered-users" element={<RegisteredUsers />} />
+            <Route path="pending-requests" element={<PendingRequests />} />
+            <Route path="accepted-requests" element={<AcceptedRequests />} />
+            <Route path="finished-requests" element={<FinishedRequests />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );
