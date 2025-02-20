@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Loader, Trash2 } from "lucide-react"; // Icons for UI
+import { Loader, Trash2 } from "lucide-react"; // Icons for better UI
 
 const RegisteredUser = () => {
   const [users, setUsers] = useState([]);
@@ -50,8 +50,10 @@ const RegisteredUser = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-3xl font-semibold text-gray-800 mb-6">Registered Users</h2>
+    <div className="p-4 md:p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 md:mb-6">
+        Registered Users
+      </h2>
 
       {loading ? (
         <div className="flex justify-center items-center h-40">
@@ -60,29 +62,34 @@ const RegisteredUser = () => {
       ) : error ? (
         <p className="text-red-500 text-center font-semibold">{error}</p>
       ) : users.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="overflow-x-auto rounded-lg shadow-lg bg-white">
+          <table className="w-full text-sm md:text-base">
             {/* Table Header */}
             <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="p-4 text-left">Email</th>
-                <th className="p-4 text-left">Phone</th>
-                <th className="p-4 text-center">Action</th>
+              <tr className="text-left">
+                <th className="p-3 md:p-4">Email</th>
+                <th className="p-3 md:p-4">Phone</th>
+                <th className="p-3 md:p-4 text-center">Action</th>
               </tr>
             </thead>
 
             {/* Table Body */}
             <tbody>
               {users.map((user, index) => (
-                <tr key={user._id} className={`border-b ${index % 2 === 0 ? "bg-gray-50" : "bg-gray-100"}`}>
-                  <td className="p-4">{user.email}</td>
-                  <td className="p-4">{user.phone}</td>
-                  <td className="p-4 text-center">
+                <tr
+                  key={user._id}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-gray-50" : "bg-gray-100"
+                  }`}
+                >
+                  <td className="p-3 md:p-4">{user.email}</td>
+                  <td className="p-3 md:p-4">{user.phone}</td>
+                  <td className="p-3 md:p-4 text-center">
                     <button
                       onClick={() => handleDelete(user._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center justify-center transition"
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 md:px-4 md:py-2 rounded flex items-center justify-center transition"
                     >
-                      <Trash2 size={18} className="mr-2" /> Delete
+                      <Trash2 size={18} className="mr-1" /> Delete
                     </button>
                   </td>
                 </tr>
@@ -97,4 +104,4 @@ const RegisteredUser = () => {
   );
 };
 
-export default RegisteredUser;
+export default Regi
