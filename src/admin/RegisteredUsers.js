@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Loader, Trash2 } from "lucide-react"; // Icons for UI
 
 const RegisteredUser = () => {
   const [users, setUsers] = useState([]);
@@ -49,41 +50,48 @@ const RegisteredUser = () => {
   };
 
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Registered Users</h2>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <h2 className="text-3xl font-semibold text-gray-800 mb-6">Registered Users</h2>
 
       {loading ? (
-        <p>Loading users...</p>
+        <div className="flex justify-center items-center h-40">
+          <Loader className="animate-spin text-gray-500" size={32} />
+        </div>
       ) : error ? (
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500 text-center font-semibold">{error}</p>
       ) : users.length > 0 ? (
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Email</th>
-              <th className="border p-2">Phone</th>
-              <th className="border p-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id} className="text-center">
-                <td className="border p-2">{user.email}</td>
-                <td className="border p-2">{user.phone}</td>
-                <td className="border p-2">
-                  <button
-                    onClick={() => handleDelete(user._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-                  >
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+            {/* Table Header */}
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="p-4 text-left">Email</th>
+                <th className="p-4 text-left">Phone</th>
+                <th className="p-4 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            {/* Table Body */}
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={user._id} className={`border-b ${index % 2 === 0 ? "bg-gray-50" : "bg-gray-100"}`}>
+                  <td className="p-4">{user.email}</td>
+                  <td className="p-4">{user.phone}</td>
+                  <td className="p-4 text-center">
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center justify-center transition"
+                    >
+                      <Trash2 size={18} className="mr-2" /> Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p>No registered users found.</p>
+        <p className="text-gray-600 text-center font-medium">No registered users found.</p>
       )}
     </div>
   );
